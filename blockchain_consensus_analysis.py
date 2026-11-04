@@ -400,7 +400,7 @@ class BCIBlockchainModel:
             "data_types": data_types,
             "granted": granted,
             "timestamp": datetime.utcnow().isoformat(),
-            "nonce": self.rng.integers(100000, 999999),
+            "nonce": int(self.rng.integers(100000, 999999)),
         }
         self.consent_ledger.append(consent_event)
         prev = self.audit_chain[-1]
@@ -563,8 +563,7 @@ def main() -> None:
         log.info("Running consensus algorithm benchmarks (%d blocks each) …", args.blocks)
         consensus_df = benchmark_consensus(args.blocks)
         avg_times = consensus_df.groupby("algorithm")["time_s"].mean()
-        print("
-" + "="*55)
+        print("\n" + "="*55)
         print("  Consensus Algorithm Benchmark Results")
         print("="*55)
         for algo, t in avg_times.items():
@@ -576,8 +575,7 @@ def main() -> None:
         log.info("Running ML privacy attack simulations …")
         attacks = MLPrivacyAttacks()
         privacy_df = attacks.full_analysis()
-        print("
-📌 ML Privacy Attack Results:")
+        print("\n📌 ML Privacy Attack Results:")
         for _, row in privacy_df.iterrows():
             print(f"  [{row['risk_level']:6}] {row['attack'][:40]:<40} Defense: {'✅' if row['defense_effective'] else '❌'}")
         reporter.privacy_charts(privacy_df)
@@ -591,8 +589,7 @@ def main() -> None:
             bci.simulate_neural_stream(pid)
         integrity = bci.integrity_check()
         audit_df = bci.generate_audit_report()
-        print("
-🧠 BCI Blockchain Integrity Check:")
+        print("\n🧠 BCI Blockchain Integrity Check:")
         for k, v in integrity.items():
             print(f"  {k:<30} {v}")
 
